@@ -1,28 +1,51 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <header>پلن کن !</header>
+    <div class="container">
+      <div class="person-list" v-for="(person, index) in persons" :key="index">
+      {{person.name}} - {{person.date}}
+      </div>
+      <input type="text" v-model="name" :class="dir" placeholder="نام">
+      <date-picker
+        inputClass="datepicker"
+        type="datetime"
+        format="YYYY-MM-DD HH:mm:ss"
+        display-format="dddd jDD jMMMM jYYYY"
+        placeholder="تاریخ"
+        v-model="date"></date-picker>
+      <button class="button" @click="addPerson">افزودن</button>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import VuePersianDatetimePicker from 'vue-persian-datetime-picker'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    datePicker: VuePersianDatetimePicker
+  },
+  data() {
+    return {
+      dir: 'rtl',
+      name:'',
+      date: '',
+      persons: [],
+    }
+  },
+  methods: {
+    addPerson () {
+      if (this.name){
+        this.persons.push({name: this.name, date: this.date})
+        this.name = null
+        this.date = null
+      }
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang='scss'>
+  @import './sass/main';
 </style>
